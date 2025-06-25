@@ -17,7 +17,7 @@ This project is for educational porpuses only. Pull request are welcome, but pri
 
 - CLIENT: react.js
 - SERVER: express.js
-- API
+- API keys
 
 ## 🧰 Getting Started
 
