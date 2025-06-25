@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -35,11 +34,14 @@ export function RegisterForm() {
                 console.log(data);
 
                 if (data.status === 'success') {
-                    setAlertText(data.msg);
+                    setAlertText('Sėkmingai prisiregistravote! Po 3 sekundžių būsite perkelti į prisijungimo puslapį.');
                     setAlertStatus('success');
                     setEmailValidationState('is-valid');
                     setPasswordValidationState('is-valid');
-                    // navigate('/login');
+
+                    setTimeout(() => {
+                        navigate('/login');
+                    }, 3000);
                 } else {
                     if (typeof data.msg === 'string') {
                         setAlertText(data.msg);
@@ -83,18 +85,6 @@ export function RegisterForm() {
                     className={`form-control ${passwordValidationState}`} placeholder="Password" required />
                 <label htmlFor="password">Password</label>
                 <div className="invalid-feedback">{passwordValidationText}</div>
-=======
-export function RegisterForm() {
-    return (
-        <form className="col-12 col-md-10 col-lg-6 col-xl-5 col-xxl-4">
-            <div className="form-floating">
-                <input id="email" type="email" className="form-control" placeholder="name@example.com" required />
-                <label htmlFor="email">Email address</label>
-            </div>
-            <div className="form-floating">
-                <input id="password" type="password" className="form-control" placeholder="Password" required />
-                <label htmlFor="password">Password</label>
->>>>>>> 84f93c1fd2e3061968912500fc39751ab82b297c
             </div>
             <div className="form-check text-start my-3">
                 <input className="form-check-input" type="checkbox" value="tos" id="tos" required />
