@@ -4,7 +4,10 @@ import { getFeaturedCategories } from '../api/getFeaturedCategories.js';
 import { getAllMovies } from '../api/getAllMovies.js';
 import { getMovieBySlug } from '../api/getMovieBySlug.js';
 import { getMoviesByCategory } from '../api/getMoviesByCategory.js';
+<<<<<<< HEAD
 import { postRegister } from '../api/postRegister.js';
+=======
+>>>>>>> 84f93c1fd2e3061968912500fc39751ab82b297c
 
 export const apiRouter = express.Router();
 
