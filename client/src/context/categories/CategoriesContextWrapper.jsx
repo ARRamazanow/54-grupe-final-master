@@ -4,29 +4,42 @@ import { CategoriesContext } from "./CategoriesContext";
 import { UserContext } from "../user/UserContext";
 
 export function CategoriesContextWrapper(props) {
-    const [categories, setCategories] = useState(initialCategoriesContext.categories);
+    const [publicCategories, setPublicCategories] = useState(initialCategoriesContext.publicCategories);
+    const [adminCategories, setAdminCategories] = useState(initialCategoriesContext.adminCategories);
     const [featuredCategories, setFeaturedCategories] = useState(initialCategoriesContext.featuredCategories);
 
     const { isLoggedIn } = useContext(UserContext);
 
     useEffect(() => {
-        let apiUrl = 'http://localhost:5417/api/public/categories';
-
-        if (isLoggedIn) {
-            apiUrl = 'http://localhost:5417/api/admin/categories';
-        }
-
-        fetch(apiUrl, {
-            method: 'GET',
-            credentials: 'include',
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    setList(data.list);
-                }
+        if (!isLoggedIn) {
+            fetch('http://localhost:5417/api/public/categories', {
+                method: 'GET',
+                credentials: 'include',
             })
-            .catch(console.error);
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        setPublicCategoriesList(data.list);
+                    }
+                })
+                .catch(console.error);
+        }
+    }, [isLoggedIn]);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetch('http://localhost:5417/api/admin/categories', {
+                method: 'GET',
+                credentials: 'include',
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        setAdminCategoriesList(data.list);
+                    }
+                })
+                .catch(console.error);
+        }
     }, [isLoggedIn]);
 
     useEffect(() => {
@@ -37,37 +50,43 @@ export function CategoriesContextWrapper(props) {
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'success') {
-                    setFeaturedList(data.list);
+                    setFeaturedCategoriesList(data.list);
                 }
             })
             .catch(console.error);
     }, []);
 
-    function setList(data) {
-        setCategories(() => data);
+    function setPublicCategoriesList(data) {
+        setPublicCategories(() => data);
     }
 
-    function create() {
+    function setAdminCategoriesList(data) {
+        setAdminCategories(() => data);
     }
 
-    function edit() {
-    }
-
-    function remove() {
-    }
-
-    function setFeaturedList(data) {
+    function setFeaturedCategoriesList(data) {
         setFeaturedCategories(() => data);
     }
 
+    function adminCreateCategory() {
+    }
+
+    function adminEditCategory() {
+    }
+
+    function adminRemoveCategory() {
+    }
+
     const value = {
-        categories,
+        publicCategories,
         featuredCategories,
-        setList,
-        create,
-        edit,
-        remove,
-        setFeaturedList,
+        adminCategories,
+        setPublicCategoriesList,
+        setFeaturedCategoriesList,
+        setAdminCategoriesList,
+        adminCreateCategory,
+        adminEditCategory,
+        adminRemoveCategory,
     };
 
     return (
