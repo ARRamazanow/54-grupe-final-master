@@ -62,7 +62,7 @@ There is no tests for this project.
 
 ## 🎅 Authors
 
-Rimantas: [Github](https://github.com/ARRamazanow)
+ARTIOM: [Github](https://github.com/ARRamazanow)
 
 ## ⚠️ License
 
