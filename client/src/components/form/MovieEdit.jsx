@@ -4,7 +4,7 @@ import { CategoriesContext } from "../../context/categories/CategoriesContext";
 import { MoviesContext } from "../../context/movies/MoviesContext";
 import defaultImg from '../../assets/default.webp';
 
-export function MovieNewForm() {
+export function MovieEditForm() {
     const navigate = useNavigate();
     const { movie } = useParams();
     const { adminCategories } = useContext(CategoriesContext);
@@ -22,10 +22,16 @@ export function MovieNewForm() {
     useEffect(() => {
         const movieData = movie ? adminMovies.filter(m => m.url_slug === movie)[0] : null;
 
+        console.log(movieData);
+
         if (movieData) {
-            setName(movieData.name);
+            setImg(movieData.thumbnail);
+            setName(movieData.title);
             setUrl(movieData.url_slug);
             setDescription(movieData.description);
+            setMinutes(movieData.duration % 60);
+            setHours((movieData.duration - movieData.duration % 60) / 60);
+            setCategory(movieData.category_url_slug);
             setStatus(movieData.is_published === 0 ? 'draft' : 'publish');
         }
     }, [adminMovies, movie]);
@@ -35,24 +41,6 @@ export function MovieNewForm() {
         setUrl('');
         setDescription('');
         setStatus('draft');
-    }
-
-    function handleImageChange(e) {
-        const formData = new FormData();
-        formData.append('thumbnail', e.target.files[0]);
-
-        fetch('http://localhost:5417/api/admin/upload', {
-            method: 'POST',
-            credentials: 'include',
-            body: formData,
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    setImg(data.msg);
-                }
-            })
-            .catch(console.error);
     }
 
     function handleMainFormSubmit(e) {
@@ -100,7 +88,7 @@ export function MovieNewForm() {
                 <div className="row g-3">
                     <div className="col-12">
                         <label htmlFor="thumbnail" className="form-label">Thumbnail</label>
-                        <input onChange={handleImageChange} className="form-control" id="thumbnail" name="thumbnail" type="file" required />
+                        <input className="form-control" id="thumbnail" name="thumbnail" type="file" required />
                         <div className="invalid-feedback">
                             Valid image is required.
                         </div>
